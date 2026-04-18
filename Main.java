@@ -19,7 +19,10 @@ public class Main {
         JButton quitButton = new JButton("Quit");
 
         addButton.addActionListener(e -> JOptionPane.showMessageDialog(frame, "Not yet implemented"));
-        viewButton.addActionListener(e -> JOptionPane.showMessageDialog(frame, "Not yet implemented"));
+        viewButton.addActionListener(e -> {
+            Ingredient sample = new Ingredient("flour", 2.5, "cups");
+            JOptionPane.showMessageDialog(frame, "Sample: " + sample);
+        });
         quitButton.addActionListener(e -> System.exit(0));
 
         panel.add(addButton);
