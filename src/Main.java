@@ -46,8 +46,9 @@ public class Main {
 
     /**
      * Prompts the user for an ingredient's name, quantity, and unit,
-     * then stores it in the pantry hash table. Handles invalid number
-     * input without crashing the menu loop.
+     * then stores it in the pantry hash table. Unit may be left empty
+     * for countable items like eggs. Handles invalid number input
+     * without crashing the menu loop.
      */
     private static void addIngredient() {
         System.out.print("Ingredient name: ");
@@ -64,9 +65,9 @@ public class Main {
             return;
         }
 
-        System.out.print("Unit (e.g., cups, grams): ");
+        // Empty unit is allowed for countable items (eggs, apples, etc.)
+        System.out.print("Unit (press Enter for whole/countable items): ");
         String unit = scanner.nextLine().trim();
-        if (unit.isEmpty()) { System.out.println("Unit cannot be empty."); return; }
 
         pantry.put(name, new Ingredient(name, qty, unit));
         System.out.println("Added: " + name);
