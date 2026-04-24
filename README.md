@@ -1,6 +1,34 @@
-[![Open in Codespaces](https://classroom.github.com/assets/launch-codespace-2972f46106e565e64193e422d61a12cf1da4916b45550586e14ef0a7c637dd04.svg)](https://classroom.github.com/open-in-codespaces?assignment_repo_id=23617781)
-# cpsc39-finalProjects
+# Dog Food — Pantry Management & Recipe Application
 
-Upload your final project to this github repo.
+## Description
+Dog Food is a pantry management and recipe application that answers
+"what do I have?" and "what can I cook?" Users maintain a digital
+inventory of their kitchen, and the program cross-references that
+inventory against a recipe library to suggest meals they can make,
+reducing food waste and grocery spending.
 
-Make a README file for your project and put the infor about your project in it - your name, date and what your program does.
+## How to Run
+1. Navigate to the `src/` directory
+2. Compile: `javac *.java`
+3. Run: `java Main`
+
+## Features
+- Add, update, and remove pantry ingredients
+- Match recipes against the current pantry and rank by coverage
+- Generate shopping lists for recipes with missing ingredients
+- Undo recent pantry changes
+- Filter recipes by category and prep time
+
+## Data Structures Used
+- **Hash Table** (custom) — `Pantry` class, O(1) ingredient lookup
+- **Linked List** (custom, generic) — `RecipeBook` and `ShoppingList`
+- **Stack** (custom) — undo history for pantry actions
+
+## Algorithms Used
+- **Match Scoring** — ranks recipes by pantry coverage (%)
+- **Merge Sort** — sorts ranked recipes by match score
+- **Linear Search** — finds recipes by name or category
+- **Inventory Deduction** — updates pantry after cooking
+
+## Author
+Zachary Amith
