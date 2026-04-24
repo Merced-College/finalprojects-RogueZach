@@ -7,25 +7,23 @@ import java.util.Scanner;
  *
  * Author: Zachary Amith
  */
-
 public class Main {
 
-    // Shared Scanner instance so we don't open/close System.in repeatedly
     private static final Scanner scanner = new Scanner(System.in);
+    private static final Pantry pantry = new Pantry();
 
     public static void main(String[] args) {
         System.out.println("Welcome to Dog Food - Pantry Manager");
 
-        // Main event loop: display menu, read choice, dispatch
         boolean running = true;
         while (running) {
             printMenu();
             String choice = scanner.nextLine().trim();
 
             switch (choice) {
-                case "1": System.out.println("[Not yet implemented]"); break;
-                case "2": System.out.println("[Not yet implemented]"); break;
-                case "3": System.out.println("[Not yet implemented]"); break;
+                case "1": addIngredient(); break;
+                case "2": viewPantry();    break;
+                case "3": removeIngredient(); break;
                 case "0":
                     running = false;
                     System.out.println("Goodbye!");
@@ -37,10 +35,6 @@ public class Main {
         scanner.close();
     }
 
-    /**
-     * Displays the top-level menu options to the user.
-     * Options are numbered for easy keyboard selection.
-     */
     private static void printMenu() {
         System.out.println("\n--- Main Menu ---");
         System.out.println("1. Add Ingredient");
@@ -48,5 +42,53 @@ public class Main {
         System.out.println("3. Remove Ingredient");
         System.out.println("0. Quit");
         System.out.print("Choice: ");
+    }
+
+    /**
+     * Prompts the user for an ingredient's name, quantity, and unit,
+     * then stores it in the pantry hash table. Handles invalid number
+     * input without crashing the menu loop.
+     */
+    private static void addIngredient() {
+        System.out.print("Ingredient name: ");
+        String name = scanner.nextLine().trim();
+        if (name.isEmpty()) { System.out.println("Name cannot be empty."); return; }
+
+        System.out.print("Quantity: ");
+        String qtyStr = scanner.nextLine().trim();
+        double qty;
+        try {
+            qty = Double.parseDouble(qtyStr);
+        } catch (NumberFormatException ex) {
+            System.out.println("Invalid quantity.");
+            return;
+        }
+
+        System.out.print("Unit (e.g., cups, grams): ");
+        String unit = scanner.nextLine().trim();
+        if (unit.isEmpty()) { System.out.println("Unit cannot be empty."); return; }
+
+        pantry.put(name, new Ingredient(name, qty, unit));
+        System.out.println("Added: " + name);
+    }
+
+    /**
+     * Prints the current pantry contents and the number of items held.
+     */
+    private static void viewPantry() {
+        System.out.println("\n--- Pantry (" + pantry.size() + " items) ---");
+        System.out.print(pantry.displayAll());
+    }
+
+    /**
+     * Removes an ingredient by name. Reports whether the operation
+     * actually removed anything.
+     */
+    private static void removeIngredient() {
+        System.out.print("Name to remove: ");
+        String name = scanner.nextLine().trim();
+        Ingredient removed = pantry.remove(name);
+        if (removed != null) System.out.println("Removed: " + removed);
+        else                 System.out.println("Not found: " + name);
     }
 }
