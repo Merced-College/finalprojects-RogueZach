@@ -29,6 +29,7 @@ public class Main {
                 case "5": findRecipes(); break;
                 case "6": generateShoppingList(); break;
                 case "7": cookRecipe(); break;
+                case "8": undoLastAction(); break;
                 case "0":
                     running = false;
                     System.out.println("Goodbye!");
@@ -49,6 +50,7 @@ public class Main {
         System.out.println("5. Find Recipes I Can Make");
         System.out.println("6. Generate Shopping List");
         System.out.println("7. Cook a Recipe");
+        System.out.println("8. Undo Last Action");
         System.out.println("0. Quit");
         System.out.print("Choice: ");
     }
@@ -218,5 +220,19 @@ public class Main {
 
         pantry.deduct(chosen);
         System.out.println("Cooked " + chosen.getName() + "! Pantry updated.");
+    }
+    
+    /**
+     * Reverses the most recent pantry mutation by popping the top
+     * of the undo stack and replaying its before-snapshot. Reports
+     * which action was undone or notes that history is empty.
+     */
+    private static void undoLastAction() {
+        PantryAction undone = pantry.undo();
+        if (undone == null) {
+            System.out.println("Nothing to undo.");
+        } else {
+            System.out.println("Undone: " + undone.getDescription());
+        }
     }
 }
