@@ -142,4 +142,30 @@ public class Pantry {
         }
         return sb.toString();
     }
+    
+    /**
+     * Deducts the given recipe's required quantities from this pantry.
+     * Ingredients that fall to zero or below are removed entirely so
+     * displayAll doesn't show empty entries.
+     *
+     * Assumes Recipe.canCook has already returned true — this method
+     * does not re-validate, so calling it on an uncookable recipe
+     * will produce negative quantities or remove partial stock.
+     *
+     * Algorithm: iterate the required array (O(M)) and perform O(1)
+     * hash lookups and updates per ingredient, giving O(M) overall.
+     */
+    public void deduct(Recipe recipe) {
+        for (Ingredient required : recipe.getRequired()) {
+            Ingredient owned = get(required.getName());
+            if (owned == null) continue;  // defensive: shouldn't happen if canCook passed
+
+            double remaining = owned.getQuantity() - required.getQuantity();
+            if (remaining <= 0) {
+                remove(required.getName());
+            } else {
+                owned.setQuantity(remaining);
+            }
+        }
+    }
 }
