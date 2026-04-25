@@ -168,21 +168,50 @@ public class Pantry {
     }
     
     /**
-     * Deducts the given recipe's required quantities from this pantry.
-     * Ingredients that fall to zero or below are removed entirely.
+     * Deducts the given recipe's required quantities from this pantry
+     * as a single undoable action. Ingredients that fall to zero or
+     * below are removed entirely.
      *
-     * Does not yet record an undo action — that is added in the next
-     * commit, where cooking becomes a single composite undoable
-     * action covering all affected ingredients.
+     * The method records one composite PantryAction capturing the
+     * pre-cook state of every required ingredient, so a single undo
+     * restores the entire pantry to its pre-cook condition rather
+     * than reversing one ingredient at a time.
+     *
+     * Algorithm: O(M) where M is the number of required ingredients.
+     * Each step is one O(1) hash lookup plus one O(1) update or
+     * remove.
      */
     public void deduct(Recipe recipe) {
-        for (Ingredient required : recipe.getRequired()) {
-            Ingredient owned = get(required.getName());
+        Ingredient[] required = recipe.getRequired();
+        int n = required.length;
+
+        // Capture a snapshot of each key before any mutation, so the
+        // composite action can restore the full pre-cook state on undo
+        String[] keys        = new String[n];
+        Ingredient[] before  = new Ingredient[n];
+        boolean[] existed    = new boolean[n];
+
+        for (int i = 0; i < n; i++) {
+            String name = required[i].getName();
+            Ingredient owned = get(name);
+            keys[i] = name;
+            before[i] = owned;
+            existed[i] = owned != null;
+        }
+
+        history.push(new PantryAction(
+            "Cook " + recipe.getName(), keys, before, existed
+        ));
+
+        // Apply the deductions using the silent variants so we don't
+        // push extra single-ingredient actions on top of the composite
+        for (Ingredient req : required) {
+            Ingredient owned = get(req.getName());
             if (owned == null) continue;
 
-            double remaining = owned.getQuantity() - required.getQuantity();
+            double remaining = owned.getQuantity() - req.getQuantity();
             if (remaining <= 0) {
-                removeSilent(required.getName());
+                removeSilent(req.getName());
             } else {
                 owned.setQuantity(remaining);
             }
