@@ -55,4 +55,26 @@ public class Recipe {
         }
         return sb.toString();
     }
+    /**
+     * Calculates what percentage of this recipe's required ingredients
+     * are currently in the given pantry. Returns 0–100.
+     *
+     * Algorithm: iterate through the required array (O(M)) and perform
+     * an O(1) hash table lookup per ingredient, giving overall O(M)
+     * per recipe. With N recipes in the book, scoring the entire
+     * library costs O(N * M).
+     *
+     * Quantity is intentionally not checked here — the user might
+     * still want to see "you have 4 of 5 ingredients for this recipe"
+     * even if one is short. A stricter check that validates quantity
+     * is implemented separately for the cook step (Phase 3).
+     */
+    public int matchScore(Pantry pantry) {
+        if (required.length == 0) return 100;
+        int owned = 0;
+        for (Ingredient ing : required) {
+            if (pantry.contains(ing.getName())) owned++;
+        }
+        return (int) Math.round(100.0 * owned / required.length);
+    }
 }
