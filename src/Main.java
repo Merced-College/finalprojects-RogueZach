@@ -111,6 +111,7 @@ public class Main {
         System.out.println("1. All recipes (with scores)");
         System.out.println("2. Filter by category");
         System.out.println("3. Filter by minimum match %");
+        System.out.println("4. Sort by match score (best first)");
         System.out.print("Choice: ");
         String choice = scanner.nextLine().trim();
 
@@ -131,6 +132,9 @@ public class Main {
                 } catch (NumberFormatException ex) {
                     System.out.println("Invalid number.");
                 }
+                break;
+            case "4":
+                System.out.print(recipeBook.displaySorted(pantry));
                 break;
             default:
                 System.out.println("Invalid choice.");

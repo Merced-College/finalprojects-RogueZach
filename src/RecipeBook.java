@@ -134,7 +134,7 @@ public class RecipeBook {
         }
         return sb.length() == 0 ? "(no recipes in category: " + category + ")" : sb.toString();
     }
-    
+
     /**
      * Same as displayWithScores but only includes recipes whose match
      * score meets or exceeds the given threshold. Useful for hiding
@@ -157,5 +157,106 @@ public class RecipeBook {
             node = node.next;
         }
         return sb.length() == 0 ? "(no recipes at or above " + minScore + "%)" : sb.toString();
+    }
+    /**
+     * Returns the recipes sorted by match score (highest first) and
+     * formatted as a numbered listing. Uses a custom merge sort
+     * implementation rather than Java's built-in sort to satisfy the
+     * project's algorithm requirement.
+     *
+     * Algorithm: copy the linked list into an array (O(n)), run
+     * merge sort on the array (O(n log n)), then format the result.
+     * Merge sort was chosen over quicksort because its worst-case
+     * complexity is also O(n log n), giving predictable performance
+     * regardless of input order.
+     */
+    public String displaySorted(Pantry pantry) {
+        int n = recipes.size();
+        if (n == 0) return "(no recipes)";
+
+        // Copy the linked list contents into an array for sorting
+        Recipe[] arr = new Recipe[n];
+        LinkedList.Node<Recipe> node = recipes.getHead();
+        for (int i = 0; i < n; i++) {
+            arr[i] = node.value;
+            node = node.next;
+        }
+
+        // Compute scores once up front to avoid recomputing during
+        // every comparison in the sort
+        int[] scores = new int[n];
+        for (int i = 0; i < n; i++) scores[i] = arr[i].matchScore(pantry);
+
+        mergeSort(arr, scores, 0, n - 1);
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < n; i++) {
+            sb.append(i + 1).append(". ")
+              .append(arr[i].getName())
+              .append(" — ").append(scores[i]).append("% match")
+              .append(" [").append(arr[i].getCategory()).append(", ")
+              .append(arr[i].getPrepTimeMinutes()).append(" min]\n");
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Recursive merge sort entry point. Sorts arr[left..right] and
+     * its parallel scores array in descending order of score.
+     */
+    private void mergeSort(Recipe[] arr, int[] scores, int left, int right) {
+        if (left >= right) return;
+        int mid = (left + right) / 2;
+        mergeSort(arr, scores, left, mid);
+        mergeSort(arr, scores, mid + 1, right);
+        merge(arr, scores, left, mid, right);
+    }
+
+    /**
+     * Merges two sorted halves arr[left..mid] and arr[mid+1..right]
+     * into a single descending-by-score run. Operates on both the
+     * recipe and score arrays in lockstep so they stay aligned.
+     */
+    private void merge(Recipe[] arr, int[] scores,
+                       int left, int mid, int right) {
+        int n1 = mid - left + 1;
+        int n2 = right - mid;
+
+        Recipe[] leftArr = new Recipe[n1];
+        int[] leftScores = new int[n1];
+        Recipe[] rightArr = new Recipe[n2];
+        int[] rightScores = new int[n2];
+
+        for (int i = 0; i < n1; i++) {
+            leftArr[i] = arr[left + i];
+            leftScores[i] = scores[left + i];
+        }
+        for (int j = 0; j < n2; j++) {
+            rightArr[j] = arr[mid + 1 + j];
+            rightScores[j] = scores[mid + 1 + j];
+        }
+
+        int i = 0, j = 0, k = left;
+        while (i < n1 && j < n2) {
+            // Descending: take whichever side has the higher score
+            if (leftScores[i] >= rightScores[j]) {
+                arr[k] = leftArr[i];
+                scores[k] = leftScores[i];
+                i++;
+            } else {
+                arr[k] = rightArr[j];
+                scores[k] = rightScores[j];
+                j++;
+            }
+            k++;
+        }
+        while (i < n1) {
+            arr[k] = leftArr[i];
+            scores[k++] = leftScores[i++];
+        }
+        while (j < n2) {
+            arr[k] = rightArr[j];
+            scores[k++] = rightScores[j++];
+        }
     }
 }
