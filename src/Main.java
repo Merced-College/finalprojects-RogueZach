@@ -27,6 +27,7 @@ public class Main {
                 case "3": removeIngredient(); break;
                 case "4": viewRecipes(); break;
                 case "5": findRecipes(); break;
+                case "6": generateShoppingList(); break;
                 case "0":
                     running = false;
                     System.out.println("Goodbye!");
@@ -45,6 +46,7 @@ public class Main {
         System.out.println("3. Remove Ingredient");
         System.out.println("4. View Recipes");
         System.out.println("5. Find Recipes I Can Make");
+        System.out.println("6. Generate Shopping List");
         System.out.println("0. Quit");
         System.out.print("Choice: ");
     }
@@ -128,6 +130,43 @@ public class Main {
                 break;
             default:
                 System.out.println("Invalid choice.");
+        }
+    }
+
+    /**
+     * Prompts the user to pick a recipe by number, then prints a
+     * shopping list of ingredients they still need to buy.
+     */
+    private static void generateShoppingList() {
+        if (recipeBook.size() == 0) {
+            System.out.println("No recipes available.");
+            return;
+        }
+
+        System.out.println("\n--- Recipes ---");
+        System.out.print(recipeBook.displayAll());
+        System.out.print("Pick a recipe number: ");
+
+        int idx;
+        try {
+            idx = Integer.parseInt(scanner.nextLine().trim()) - 1;
+        } catch (NumberFormatException ex) {
+            System.out.println("Invalid number.");
+            return;
+        }
+
+        Recipe chosen = recipeBook.getRecipes().get(idx);
+        if (chosen == null) {
+            System.out.println("No recipe at that position.");
+            return;
+        }
+
+        ShoppingList list = ShoppingList.generateFor(chosen, pantry);
+        System.out.println("\n--- Shopping List for " + chosen.getName() + " ---");
+        if (list.isEmpty()) {
+            System.out.println("You have everything you need!");
+        } else {
+            System.out.print(list.displayAll());
         }
     }
 }
