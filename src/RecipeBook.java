@@ -4,7 +4,7 @@
  * LinkedList so recipes can be added or removed dynamically as the
  * library grows.
  *
- * Author: Zachary Amith
+ * Author: Zachary Amith & Claude Opus 4.7
  */
 public class RecipeBook {
 

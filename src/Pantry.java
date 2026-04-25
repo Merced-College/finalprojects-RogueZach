@@ -8,7 +8,7 @@
  * table reduces the lookup step to O(1) on average, making scoring
  * feasible as the recipe library grows.
  *
- * Author: Zachary Amith
+ * Author: Zachary Amith & Claude Opus 4.7
  */
 public class Pantry {
 

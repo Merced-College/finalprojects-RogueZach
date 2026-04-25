@@ -12,7 +12,7 @@
  * single-ingredient changes and multi-ingredient cooks with the
  * same shape.
  *
- * Author: Zachary Amith
+ * Author: Zachary Amith & Claude Opus 4.7
  */
 public class PantryAction {
 

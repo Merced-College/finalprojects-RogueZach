@@ -9,7 +9,7 @@
  * the store. The linked list handles those mid-list operations
  * without shifting elements like an array would require.
  *
- * Author: Zachary Amith
+ * Author: Zachary Amith & Claude Opus 4.7
  */
 public class ShoppingList {
 
@@ -36,7 +36,7 @@ public class ShoppingList {
     public String displayAll() {
         return items.displayAll();
     }
-    
+
     /**
      * Builds a ShoppingList containing every ingredient from the
      * given recipe that is either missing from the pantry or present

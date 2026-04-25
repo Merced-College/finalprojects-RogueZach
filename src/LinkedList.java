@@ -10,7 +10,7 @@
  * Implemented from scratch (not java.util.LinkedList) to satisfy the
  * project's custom data structure requirement.
  *
- * Author: Zachary Amith
+ * Author: Zachary Amith & Claude Opus 4.7
  */
 public class LinkedList<T> {
 

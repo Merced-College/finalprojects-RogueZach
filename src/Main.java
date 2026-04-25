@@ -5,7 +5,7 @@ import java.util.Scanner;
  * Handles the primary console menu loop and routes user input to
  * the appropriate feature handlers.
  *
- * Author: Zachary Amith
+ * Author: Zachary Amith & Claude Opus 4.7
  */
 public class Main {
 

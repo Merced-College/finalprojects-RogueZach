@@ -7,7 +7,7 @@
  * array gives O(1) indexed access for the match-scoring algorithm
  * without the overhead of a list structure.
  *
- * Author: Zachary Amith
+ * Author: Zachary Amith & Claude Opus 4.7
  */
 public class Recipe {
 
@@ -95,7 +95,7 @@ public class Recipe {
         }
         return true;
     }
-    
+
     /**
      * Produces a human-readable description of what's missing or
      * short for this recipe. Returns an empty string if the recipe
