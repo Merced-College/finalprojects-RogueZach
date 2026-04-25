@@ -7,7 +7,7 @@
  * both the Pantry (actual stock) and Recipe (required items) can
  * reference them consistently without duplicating field definitions.
  *
- * Author: Zachary Amith
+ * Author: Zachary Amith & Claude Opus 4.7
  */
 public class Ingredient {
 
