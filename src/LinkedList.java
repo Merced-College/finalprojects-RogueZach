@@ -45,9 +45,9 @@ public class LinkedList<T> {
         size++;
     }
 
-    public int size()        { return size; }
+    public int size() { return size; }
     public boolean isEmpty() { return size == 0; }
-    
+
     /**
      * Returns the value at the given index, or null if out of bounds.
      * Walks the chain from the head, so cost is O(index).
@@ -66,15 +66,12 @@ public class LinkedList<T> {
     public boolean remove(T target) {
         if (head == null) return false;
 
-        // Special case: target sits at the head
         if (head.value.equals(target)) {
             head = head.next;
             size--;
             return true;
         }
 
-        // Walk the chain, tracking the previous node so we can relink
-        // around the removed node without breaking the list
         Node<T> prev = head;
         Node<T> current = head.next;
         while (current != null) {
@@ -88,6 +85,7 @@ public class LinkedList<T> {
         }
         return false;
     }
+
     /**
      * Returns the head node so callers can walk the list directly.
      * Used by RecipeBook to iterate in O(n) instead of repeatedly

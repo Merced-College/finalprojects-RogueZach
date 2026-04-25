@@ -23,7 +23,7 @@ public class Main {
 
             switch (choice) {
                 case "1": addIngredient(); break;
-                case "2": viewPantry();    break;
+                case "2": viewPantry(); break;
                 case "3": removeIngredient(); break;
                 case "4": viewRecipes(); break;
                 case "5": findRecipes(); break;
@@ -49,24 +49,24 @@ public class Main {
         System.out.print("Choice: ");
     }
 
-    /**
-     * Prompts the user for an ingredient's name, quantity, and unit,
-     * then stores it in the pantry hash table. Unit may be left empty
-     * for countable items like eggs. Handles invalid number input
-     * without crashing the menu loop.
-     */
     private static void addIngredient() {
         System.out.print("Ingredient name: ");
         String name = scanner.nextLine().trim();
-        if (name.isEmpty()) { System.out.println("Name cannot be empty."); return; }
+        if (name.isEmpty()) {
+            System.out.println("Name cannot be empty.");
+            return;
+        }
 
         System.out.print("Quantity: ");
         String qtyStr = scanner.nextLine().trim();
         double qty;
-        try { qty = Double.parseDouble(qtyStr); }
-        catch (NumberFormatException ex) { System.out.println("Invalid quantity."); return; }
+        try {
+            qty = Double.parseDouble(qtyStr);
+        } catch (NumberFormatException ex) {
+            System.out.println("Invalid quantity.");
+            return;
+        }
 
-        // Empty unit is allowed for countable items (eggs, apples, etc.)
         System.out.print("Unit (press Enter for whole/countable items): ");
         String unit = scanner.nextLine().trim();
 
@@ -74,8 +74,29 @@ public class Main {
         System.out.println("Added: " + name);
     }
 
-    /**
-     * Prints the current pantry contents and the number of items held.
-     */
     private static void viewPantry() {
-        System.out.println("\n--- Pantry (" + pantry.size
+        System.out.println("\n--- Pantry (" + pantry.size() + " items) ---");
+        System.out.print(pantry.displayAll());
+    }
+
+    private static void removeIngredient() {
+        System.out.print("Name to remove: ");
+        String name = scanner.nextLine().trim();
+        Ingredient removed = pantry.remove(name);
+        if (removed != null) {
+            System.out.println("Removed: " + removed);
+        } else {
+            System.out.println("Not found: " + name);
+        }
+    }
+
+    private static void viewRecipes() {
+        System.out.println("\n--- Recipes (" + recipeBook.size() + ") ---");
+        System.out.print(recipeBook.displayAll());
+    }
+
+    private static void findRecipes() {
+        System.out.println("\n--- Recipe Matches ---");
+        System.out.print(recipeBook.displayWithScores(pantry));
+    }
+}
