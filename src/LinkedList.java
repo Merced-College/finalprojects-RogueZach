@@ -88,4 +88,26 @@ public class LinkedList<T> {
         }
         return false;
     }
+    /**
+     * Returns the head node so callers can walk the list directly.
+     * Used by RecipeBook to iterate in O(n) instead of repeatedly
+     * calling get(index), which would cost O(n^2) overall.
+     */
+    public Node<T> getHead() { return head; }
+
+    /**
+     * Builds a numbered, multi-line string by walking every node and
+     * appending its toString. Returns "(empty)" if the list is empty.
+     */
+    public String displayAll() {
+        if (head == null) return "(empty)";
+        StringBuilder sb = new StringBuilder();
+        Node<T> current = head;
+        int i = 1;
+        while (current != null) {
+            sb.append(i++).append(". ").append(current.value).append("\n");
+            current = current.next;
+        }
+        return sb.toString();
+    }
 }
