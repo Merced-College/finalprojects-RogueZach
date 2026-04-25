@@ -30,6 +30,7 @@ public class Main {
                 case "6": generateShoppingList(); break;
                 case "7": cookRecipe(); break;
                 case "8": undoLastAction(); break;
+                case "9": searchRecipes(); break;
                 case "0":
                     running = false;
                     System.out.println("Goodbye!");
@@ -51,6 +52,7 @@ public class Main {
         System.out.println("6. Generate Shopping List");
         System.out.println("7. Cook a Recipe");
         System.out.println("8. Undo Last Action");
+        System.out.println("9. Search Recipes by Name");
         System.out.println("0. Quit");
         System.out.print("Choice: ");
     }
@@ -238,5 +240,15 @@ public class Main {
         } else {
             System.out.println("Undone: " + undone.getDescription());
         }
+    }
+    /**
+     * Prompts the user for a search term and prints every recipe
+     * whose name contains the term (case-insensitive).
+     */
+    private static void searchRecipes() {
+        System.out.print("Search term: ");
+        String query = scanner.nextLine().trim();
+        System.out.println("\n--- Search Results ---");
+        System.out.print(recipeBook.searchByName(query));
     }
 }

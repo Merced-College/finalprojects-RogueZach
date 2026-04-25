@@ -259,4 +259,39 @@ public class RecipeBook {
             scores[k++] = rightScores[j++];
         }
     }
+    /**
+     * Searches the recipe book for any recipe whose name contains
+     * the given query (case-insensitive). Returns a formatted listing
+     * of matches, or a "no matches" message if none are found.
+     *
+     * Algorithm: linear search. Walks every node in the linked list
+     * and tests each recipe name against the query, giving O(n)
+     * worst case. Linear search was chosen because the recipe book
+     * is small and unsorted; binary search would require maintaining
+     * a sorted order on every insert, which isn't worth it for this
+     * data size.
+     */
+    public String searchByName(String query) {
+        if (query == null || query.isEmpty()) return "(empty query)";
+        String needle = query.toLowerCase();
+
+        StringBuilder sb = new StringBuilder();
+        int matches = 0;
+        LinkedList.Node<Recipe> node = recipes.getHead();
+        while (node != null) {
+            Recipe r = node.value;
+            if (r.getName().toLowerCase().contains(needle)) {
+                matches++;
+                sb.append(matches).append(". ")
+                  .append(r.getName())
+                  .append(" [").append(r.getCategory()).append(", ")
+                  .append(r.getPrepTimeMinutes()).append(" min]\n");
+            }
+            node = node.next;
+        }
+
+        return matches == 0
+            ? "(no recipes match \"" + query + "\")"
+            : sb.toString();
+    }
 }
