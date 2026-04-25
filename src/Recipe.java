@@ -77,4 +77,22 @@ public class Recipe {
         }
         return (int) Math.round(100.0 * owned / required.length);
     }
+    
+    /**
+     * Returns true only if every required ingredient is in the pantry
+     * AND the pantry has at least the required quantity of each.
+     * Used by the cook step, where a partial match isn't enough —
+     * you can't cook pancakes with half the flour you need.
+     *
+     * Algorithm: iterate the required array (O(M)) with O(1) hash
+     * lookups per ingredient. Short-circuits on the first failure.
+     */
+    public boolean canCook(Pantry pantry) {
+        for (Ingredient required : required) {
+            Ingredient owned = pantry.get(required.getName());
+            if (owned == null) return false;
+            if (owned.getQuantity() < required.getQuantity()) return false;
+        }
+        return true;
+    }
 }
