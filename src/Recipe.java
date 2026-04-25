@@ -95,4 +95,26 @@ public class Recipe {
         }
         return true;
     }
+    
+    /**
+     * Produces a human-readable description of what's missing or
+     * short for this recipe. Returns an empty string if the recipe
+     * can be cooked as-is. Used by the cook step to give the user
+     * actionable feedback instead of a vague "not enough" message.
+     */
+    public String describeShortfall(Pantry pantry) {
+        StringBuilder sb = new StringBuilder();
+        for (Ingredient required : required) {
+            Ingredient owned = pantry.get(required.getName());
+            if (owned == null) {
+                sb.append("  - missing: ").append(required).append("\n");
+            } else if (owned.getQuantity() < required.getQuantity()) {
+                double shortfall = required.getQuantity() - owned.getQuantity();
+                sb.append("  - need ").append(shortfall)
+                  .append(" more ").append(required.getUnit().isEmpty() ? "" : required.getUnit() + " of ")
+                  .append(required.getName()).append("\n");
+            }
+        }
+        return sb.toString();
+    }
 }

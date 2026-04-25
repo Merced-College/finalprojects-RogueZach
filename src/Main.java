@@ -203,7 +203,8 @@ public class Main {
         }
 
         if (!chosen.canCook(pantry)) {
-            System.out.println("You don't have enough to cook " + chosen.getName() + ".");
+            System.out.println("You don't have enough to cook " + chosen.getName() + ":");
+            System.out.print(chosen.describeShortfall(pantry));
             System.out.println("Try option 6 to generate a shopping list.");
             return;
         }
