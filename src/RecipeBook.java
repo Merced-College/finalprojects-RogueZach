@@ -1,5 +1,3 @@
-import java.util.LinkedList;
-
 /**
  * RecipeBook — collection of all recipes the user can browse, search,
  * and match against the pantry. Backed by the custom generic
@@ -90,7 +88,7 @@ public class RecipeBook {
     public String displayAll() {
         return recipes.displayAll();
     }
-    
+
     /**
      * Walks every recipe and produces a listing showing each recipe's
      * match percentage against the given pantry. Iterates the linked
