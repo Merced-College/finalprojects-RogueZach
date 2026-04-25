@@ -26,6 +26,7 @@ public class Main {
                 case "2": viewPantry();    break;
                 case "3": removeIngredient(); break;
                 case "4": viewRecipes(); break;
+                case "5": findRecipes(); break;
                 case "0":
                     running = false;
                     System.out.println("Goodbye!");
@@ -43,6 +44,7 @@ public class Main {
         System.out.println("2. View Pantry");
         System.out.println("3. Remove Ingredient");
         System.out.println("4. View Recipes");
+        System.out.println("5. Find Recipes I Can Make");
         System.out.println("0. Quit");
         System.out.print("Choice: ");
     }
@@ -76,25 +78,4 @@ public class Main {
      * Prints the current pantry contents and the number of items held.
      */
     private static void viewPantry() {
-        System.out.println("\n--- Pantry (" + pantry.size() + " items) ---");
-        System.out.print(pantry.displayAll());
-    }
-
-    /**
-     * Removes an ingredient by name. Reports whether the operation
-     * actually removed anything.
-     */
-    private static void removeIngredient() {
-        System.out.print("Name to remove: ");
-        String name = scanner.nextLine().trim();
-        Ingredient removed = pantry.remove(name);
-        if (removed != null) System.out.println("Removed: " + removed);
-        else                 System.out.println("Not found: " + name);
-    }
-
-    /** Prints every recipe in the RecipeBook. */
-    private static void viewRecipes() {
-        System.out.println("\n--- Recipes (" + recipeBook.size() + ") ---");
-        System.out.print(recipeBook.displayAll());
-    }
-}
+        System.out.println("\n--- Pantry (" + pantry.size

@@ -1,3 +1,5 @@
+import java.util.LinkedList;
+
 /**
  * RecipeBook — collection of all recipes the user can browse, search,
  * and match against the pantry. Backed by the custom generic
@@ -87,5 +89,29 @@ public class RecipeBook {
     /** Returns a numbered listing of every recipe in the book. */
     public String displayAll() {
         return recipes.displayAll();
+    }
+    
+    /**
+     * Walks every recipe and produces a listing showing each recipe's
+     * match percentage against the given pantry. Iterates the linked
+     * list directly via getHead so traversal is O(n) rather than the
+     * O(n^2) cost of repeated get(index) calls.
+     */
+    public String displayWithScores(Pantry pantry) {
+        if (recipes.isEmpty()) return "(no recipes)";
+        StringBuilder sb = new StringBuilder();
+        int i = 1;
+
+        LinkedList.Node<Recipe> node = recipes.getHead();
+        while (node != null) {
+            Recipe r = node.value;
+            sb.append(i++).append(". ")
+              .append(r.getName())
+              .append(" — ").append(r.matchScore(pantry)).append("% match")
+              .append(" [").append(r.getCategory()).append(", ")
+              .append(r.getPrepTimeMinutes()).append(" min]\n");
+            node = node.next;
+        }
+        return sb.toString();
     }
 }
