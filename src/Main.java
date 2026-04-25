@@ -14,7 +14,7 @@ public class Main {
     private static final RecipeBook recipeBook = new RecipeBook();
 
     public static void main(String[] args) {
-        System.out.println("Welcome to Dog Food - Pantry Manager");
+        printBanner();
 
         boolean running = true;
         while (running) {
@@ -42,6 +42,14 @@ public class Main {
         scanner.close();
     }
 
+    /** Prints a one-time welcome banner at startup. */
+    private static void printBanner() {
+        System.out.println("============================================");
+        System.out.println("        Dog Food - Pantry Manager");
+        System.out.println("    What you have. What you can cook.");
+        System.out.println("============================================");
+    }
+
     private static void printMenu() {
         System.out.println("\n--- Main Menu ---");
         System.out.println("1. Add Ingredient");
@@ -57,9 +65,15 @@ public class Main {
         System.out.print("Choice: ");
     }
 
+    /**
+     * Prompts the user for an ingredient's name, quantity, and unit.
+     * Names are trimmed and stored as lowercase to prevent duplicate
+     * entries with different casing. Quantity must be greater than
+     * zero. Unit may be empty for countable items like eggs.
+     */
     private static void addIngredient() {
         System.out.print("Ingredient name: ");
-        String name = scanner.nextLine().trim();
+        String name = scanner.nextLine().trim().toLowerCase();
         if (name.isEmpty()) {
             System.out.println("Name cannot be empty.");
             return;
@@ -72,6 +86,10 @@ public class Main {
             qty = Double.parseDouble(qtyStr);
         } catch (NumberFormatException ex) {
             System.out.println("Invalid quantity.");
+            return;
+        }
+        if (qty <= 0) {
+            System.out.println("Quantity must be greater than zero.");
             return;
         }
 
@@ -89,7 +107,7 @@ public class Main {
 
     private static void removeIngredient() {
         System.out.print("Name to remove: ");
-        String name = scanner.nextLine().trim();
+        String name = scanner.nextLine().trim().toLowerCase();
         Ingredient removed = pantry.remove(name);
         if (removed != null) {
             System.out.println("Removed: " + removed);
@@ -105,8 +123,8 @@ public class Main {
 
     /**
      * Sub-menu for the "Find Recipes" feature. Lets the user choose
-     * between viewing all matches, filtering by category, or
-     * filtering by a minimum match percentage.
+     * between viewing all matches, filtering by category, filtering
+     * by a minimum match percentage, or sorting by match score.
      */
     private static void findRecipes() {
         System.out.println("\n--- Find Recipes ---");
@@ -227,11 +245,10 @@ public class Main {
         pantry.deduct(chosen);
         System.out.println("Cooked " + chosen.getName() + "! Pantry updated.");
     }
-    
+
     /**
      * Reverses the most recent pantry mutation by popping the top
-     * of the undo stack and replaying its before-snapshot. Reports
-     * which action was undone or notes that history is empty.
+     * of the undo stack and replaying its before-snapshot.
      */
     private static void undoLastAction() {
         PantryAction undone = pantry.undo();
@@ -241,6 +258,7 @@ public class Main {
             System.out.println("Undone: " + undone.getDescription());
         }
     }
+
     /**
      * Prompts the user for a search term and prints every recipe
      * whose name contains the term (case-insensitive).
