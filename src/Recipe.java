@@ -37,4 +37,22 @@ public class Recipe {
     public Ingredient[] getRequired() { return required; }
     public int getPrepTimeMinutes()   { return prepTimeMinutes; }
     public String getCategory()       { return category; }
+
+    /**
+     * Multi-line representation of the recipe used in menu listings.
+     * Shows the name, category, prep time, and each required
+     * ingredient on its own line.
+     */
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(name)
+          .append(" [").append(category).append(", ")
+          .append(prepTimeMinutes).append(" min]\n");
+        sb.append("  Ingredients:\n");
+        for (Ingredient ing : required) {
+            sb.append("    - ").append(ing).append("\n");
+        }
+        return sb.toString();
+    }
 }
