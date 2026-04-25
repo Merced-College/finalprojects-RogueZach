@@ -97,12 +97,14 @@ public class Main {
 
     /**
      * Sub-menu for the "Find Recipes" feature. Lets the user choose
-     * between viewing all matches or filtering by category.
+     * between viewing all matches, filtering by category, or
+     * filtering by a minimum match percentage.
      */
     private static void findRecipes() {
         System.out.println("\n--- Find Recipes ---");
         System.out.println("1. All recipes (with scores)");
         System.out.println("2. Filter by category");
+        System.out.println("3. Filter by minimum match %");
         System.out.print("Choice: ");
         String choice = scanner.nextLine().trim();
 
@@ -114,6 +116,15 @@ public class Main {
                 System.out.print("Category (e.g., vegan, quick, breakfast): ");
                 String cat = scanner.nextLine().trim();
                 System.out.print(recipeBook.displayByCategory(pantry, cat));
+                break;
+            case "3":
+                System.out.print("Minimum match % (0-100): ");
+                try {
+                    int min = Integer.parseInt(scanner.nextLine().trim());
+                    System.out.print(recipeBook.displayAboveScore(pantry, min));
+                } catch (NumberFormatException ex) {
+                    System.out.println("Invalid number.");
+                }
                 break;
             default:
                 System.out.println("Invalid choice.");

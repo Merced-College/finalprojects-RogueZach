@@ -112,7 +112,7 @@ public class RecipeBook {
         }
         return sb.toString();
     }
-    
+
     /**
      * Same as displayWithScores but only includes recipes whose
      * category matches the given filter (case-insensitive). Useful
@@ -133,5 +133,29 @@ public class RecipeBook {
             node = node.next;
         }
         return sb.length() == 0 ? "(no recipes in category: " + category + ")" : sb.toString();
+    }
+    
+    /**
+     * Same as displayWithScores but only includes recipes whose match
+     * score meets or exceeds the given threshold. Useful for hiding
+     * recipes the user is far from being able to make.
+     */
+    public String displayAboveScore(Pantry pantry, int minScore) {
+        StringBuilder sb = new StringBuilder();
+        int i = 1;
+        LinkedList.Node<Recipe> node = recipes.getHead();
+        while (node != null) {
+            Recipe r = node.value;
+            int score = r.matchScore(pantry);
+            if (score >= minScore) {
+                sb.append(i++).append(". ")
+                  .append(r.getName())
+                  .append(" — ").append(score).append("% match")
+                  .append(" [").append(r.getCategory()).append(", ")
+                  .append(r.getPrepTimeMinutes()).append(" min]\n");
+            }
+            node = node.next;
+        }
+        return sb.length() == 0 ? "(no recipes at or above " + minScore + "%)" : sb.toString();
     }
 }
