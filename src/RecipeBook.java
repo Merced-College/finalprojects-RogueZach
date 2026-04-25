@@ -112,4 +112,26 @@ public class RecipeBook {
         }
         return sb.toString();
     }
+    
+    /**
+     * Same as displayWithScores but only includes recipes whose
+     * category matches the given filter (case-insensitive). Useful
+     * for narrowing results to "vegan", "quick", "breakfast", etc.
+     */
+    public String displayByCategory(Pantry pantry, String category) {
+        StringBuilder sb = new StringBuilder();
+        int i = 1;
+        LinkedList.Node<Recipe> node = recipes.getHead();
+        while (node != null) {
+            Recipe r = node.value;
+            if (r.getCategory().equalsIgnoreCase(category)) {
+                sb.append(i++).append(". ")
+                  .append(r.getName())
+                  .append(" — ").append(r.matchScore(pantry)).append("% match")
+                  .append(" [").append(r.getPrepTimeMinutes()).append(" min]\n");
+            }
+            node = node.next;
+        }
+        return sb.length() == 0 ? "(no recipes in category: " + category + ")" : sb.toString();
+    }
 }

@@ -95,8 +95,28 @@ public class Main {
         System.out.print(recipeBook.displayAll());
     }
 
+    /**
+     * Sub-menu for the "Find Recipes" feature. Lets the user choose
+     * between viewing all matches or filtering by category.
+     */
     private static void findRecipes() {
-        System.out.println("\n--- Recipe Matches ---");
-        System.out.print(recipeBook.displayWithScores(pantry));
+        System.out.println("\n--- Find Recipes ---");
+        System.out.println("1. All recipes (with scores)");
+        System.out.println("2. Filter by category");
+        System.out.print("Choice: ");
+        String choice = scanner.nextLine().trim();
+
+        switch (choice) {
+            case "1":
+                System.out.print(recipeBook.displayWithScores(pantry));
+                break;
+            case "2":
+                System.out.print("Category (e.g., vegan, quick, breakfast): ");
+                String cat = scanner.nextLine().trim();
+                System.out.print(recipeBook.displayByCategory(pantry, cat));
+                break;
+            default:
+                System.out.println("Invalid choice.");
+        }
     }
 }
