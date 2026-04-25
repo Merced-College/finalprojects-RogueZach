@@ -28,6 +28,7 @@ public class Main {
                 case "4": viewRecipes(); break;
                 case "5": findRecipes(); break;
                 case "6": generateShoppingList(); break;
+                case "7": cookRecipe(); break;
                 case "0":
                     running = false;
                     System.out.println("Goodbye!");
@@ -47,6 +48,7 @@ public class Main {
         System.out.println("4. View Recipes");
         System.out.println("5. Find Recipes I Can Make");
         System.out.println("6. Generate Shopping List");
+        System.out.println("7. Cook a Recipe");
         System.out.println("0. Quit");
         System.out.print("Choice: ");
     }
@@ -168,5 +170,52 @@ public class Main {
         } else {
             System.out.print(list.displayAll());
         }
+    }
+
+    /**
+     * Prompts the user to pick a recipe, verifies there's enough in
+     * the pantry to actually cook it, asks for confirmation, then
+     * deducts the required quantities. Does nothing if the recipe
+     * isn't cookable.
+     */
+    private static void cookRecipe() {
+        if (recipeBook.size() == 0) {
+            System.out.println("No recipes available.");
+            return;
+        }
+
+        System.out.println("\n--- Recipes ---");
+        System.out.print(recipeBook.displayAll());
+        System.out.print("Pick a recipe number: ");
+
+        int idx;
+        try {
+            idx = Integer.parseInt(scanner.nextLine().trim()) - 1;
+        } catch (NumberFormatException ex) {
+            System.out.println("Invalid number.");
+            return;
+        }
+
+        Recipe chosen = recipeBook.getRecipes().get(idx);
+        if (chosen == null) {
+            System.out.println("No recipe at that position.");
+            return;
+        }
+
+        if (!chosen.canCook(pantry)) {
+            System.out.println("You don't have enough to cook " + chosen.getName() + ".");
+            System.out.println("Try option 6 to generate a shopping list.");
+            return;
+        }
+
+        System.out.print("Cook " + chosen.getName() + "? (y/n): ");
+        String confirm = scanner.nextLine().trim().toLowerCase();
+        if (!confirm.equals("y") && !confirm.equals("yes")) {
+            System.out.println("Cancelled.");
+            return;
+        }
+
+        pantry.deduct(chosen);
+        System.out.println("Cooked " + chosen.getName() + "! Pantry updated.");
     }
 }
