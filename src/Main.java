@@ -11,6 +11,7 @@ public class Main {
 
     private static final Scanner scanner = new Scanner(System.in);
     private static final Pantry pantry = new Pantry();
+    private static final RecipeBook recipeBook = new RecipeBook();
 
     public static void main(String[] args) {
         System.out.println("Welcome to Dog Food - Pantry Manager");
@@ -24,6 +25,7 @@ public class Main {
                 case "1": addIngredient(); break;
                 case "2": viewPantry();    break;
                 case "3": removeIngredient(); break;
+                case "4": viewRecipes(); break;
                 case "0":
                     running = false;
                     System.out.println("Goodbye!");
@@ -40,6 +42,7 @@ public class Main {
         System.out.println("1. Add Ingredient");
         System.out.println("2. View Pantry");
         System.out.println("3. Remove Ingredient");
+        System.out.println("4. View Recipes");
         System.out.println("0. Quit");
         System.out.print("Choice: ");
     }
@@ -58,12 +61,8 @@ public class Main {
         System.out.print("Quantity: ");
         String qtyStr = scanner.nextLine().trim();
         double qty;
-        try {
-            qty = Double.parseDouble(qtyStr);
-        } catch (NumberFormatException ex) {
-            System.out.println("Invalid quantity.");
-            return;
-        }
+        try { qty = Double.parseDouble(qtyStr); }
+        catch (NumberFormatException ex) { System.out.println("Invalid quantity."); return; }
 
         // Empty unit is allowed for countable items (eggs, apples, etc.)
         System.out.print("Unit (press Enter for whole/countable items): ");
@@ -91,5 +90,11 @@ public class Main {
         Ingredient removed = pantry.remove(name);
         if (removed != null) System.out.println("Removed: " + removed);
         else                 System.out.println("Not found: " + name);
+    }
+
+    /** Prints every recipe in the RecipeBook. */
+    private static void viewRecipes() {
+        System.out.println("\n--- Recipes (" + recipeBook.size() + ") ---");
+        System.out.print(recipeBook.displayAll());
     }
 }
